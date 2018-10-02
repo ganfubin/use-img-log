@@ -1,0 +1,15 @@
+{
+  "name": "use-img-log",
+  "version": "1.0.6",
+  "description": "show not use img log",
+  "main": "index.js",
+  "author": "ganfubin",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ganfubin/use-img-log.git"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1"
+  }
+}
