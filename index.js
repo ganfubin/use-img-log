@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 
 //不用遍历得文件
-let notEachDirectory = ['package', 'node_modules', '.idea', '.gitignore', 'build', 'dist', '.git', '.nuxt'];
+let notEachDirectory = ['package.json', 'package-lock.json', 'node_modules', '.idea', '.gitignore', 'build', 'dist', '.git', 'README.md'];
 
 
 const showNotUseImgLog = () => {
@@ -59,9 +59,10 @@ const getNotEachDirectory = (pathRoot, notEachDirectory) => {
 const getFileImg = (files, pathDir) => {
     let imgList = [];
     files.forEach((item) => {
-        if (notEachDirectory.indexOf(item) === -1) {
+        if (!notEachDirectory.includes(item)) {
             let pathItem = `${pathDir}/${item}`;
             let stat = fs.statSync(pathItem);
+
             if (stat.isDirectory()) {
                 imgList.push(...getFileImg(fs.readdirSync(pathItem), pathItem));
             } else {
@@ -87,7 +88,7 @@ const getFileImg = (files, pathDir) => {
  */
 const findNotUseImg = (files, pathDir, imgList) => {
     files.forEach((item) => {
-        if (notEachDirectory.indexOf(item) === -1) {
+        if (!notEachDirectory.includes(item)) {
             let pathItem = `${pathDir}/${item}`;
             let stat = fs.statSync(pathItem);
             if (stat.isDirectory()) {

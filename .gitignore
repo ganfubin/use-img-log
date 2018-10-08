@@ -9,4 +9,4 @@ dist
 build
 package-lock.json
 imgs
-imgs/*
+imgs/**
