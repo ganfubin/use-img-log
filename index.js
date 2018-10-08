@@ -11,9 +11,6 @@ const showNotUseImgLog = () => {
 
     let root = process.cwd();
 
-    //获取不用遍历得文件
-    notEachDirectory = getNotEachDirectory(root, notEachDirectory);
-
     //获取项目全部文件
     let files = fs.readdirSync(root);
 
@@ -34,20 +31,6 @@ const showNotUseImgLog = () => {
 
 };
 
-/**
- * 获取不用遍历的文件
- * @param notEachDirectory
- * @returns {*}
- */
-const getNotEachDirectory = (pathRoot, notEachDirectory) => {
-    let iginorePath = `${pathRoot}/.gitignore`;
-    let isExist =  fs.existsSync(iginorePath);
-    if(isExist){
-        let ignoreDirectory = fs.readFileSync(iginorePath, 'utf-8');
-        notEachDirectory.push(...ignoreDirectory.match(/\w+/gi));
-    }
-    return notEachDirectory
-};
 
 
 /**
