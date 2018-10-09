@@ -10,7 +10,7 @@ Using npm:
   npm install use-img-log
 
   "scripts": {
-    "clean": "node node_modules/use-img-log/index.js"
+    "clean": "use-img-log"
   }
 
 

@@ -1,6 +1,6 @@
 {
   "name": "use-img-log",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "show not use img log",
   "main": "index.js",
   "author": "ganfubin",
@@ -11,5 +11,8 @@
   },
   "dependencies": {
     "chalk": "^2.4.1"
+  },
+  "bin": {
+    "use-img-log": "index.js"
   }
 }
