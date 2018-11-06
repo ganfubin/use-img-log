@@ -11,28 +11,27 @@ let notEachDirectory = ['package.json', 'package-lock.json', 'node_modules', '.i
 
 const showNotUseImgLog = () => {
 
-    let root = process.cwd();
+  let root = process.cwd();
 
-    //获取项目全部文件
-    let files = fs.readdirSync(root);
+  //获取项目全部文件
+  let files = fs.readdirSync(root);
 
-    //获取项目中所有
-    let imgList = getFileImg(files, root);
+  //获取项目中所有
+  let imgList = getFileImg(files, root);
 
-    //标记被使用过的图片
-    imgList = findNotUseImg(files, root, imgList);
+  //标记被使用过的图片
+  imgList = findNotUseImg(files, root, imgList);
 
-    //去重
-    imgList = uniq(imgList);
+  //去重
+  imgList = uniq(imgList);
 
-    //打印出没有使用过图片的日志路径
-    let notUseImg = consoleNotUseImg(imgList);
+  //打印出没有使用过图片的日志路径
+  let notUseImg = consoleNotUseImg(imgList);
 
-    //退出进程
-    process.exit((notUseImg && notUseImg.length > 0) ? 1 : 0);
+  //退出进程
+  process.exit((notUseImg && notUseImg.length > 0) ? 1 : 0);
 
 };
-
 
 
 /**
@@ -42,26 +41,26 @@ const showNotUseImgLog = () => {
  * @returns {Array}
  */
 const getFileImg = (files, pathDir) => {
-    let imgList = [];
-    files.forEach((item) => {
-        if (!notEachDirectory.includes(item)) {
-            let pathItem = `${pathDir}/${item}`;
-            let stat = fs.statSync(pathItem);
+  let imgList = [];
+  files.forEach((item) => {
+    if (!notEachDirectory.includes(item)) {
+      let pathItem = `${pathDir}/${item}`;
+      let stat = fs.statSync(pathItem);
 
-            if (stat.isDirectory()) {
-                imgList.push(...getFileImg(fs.readdirSync(pathItem), pathItem));
-            } else {
-                let isImg = /\.jpg|\.png|\.gif|\.svg/gi.test(item);
-                if (isImg) {
-                    imgList.push({
-                        path: pathItem,
-                        name: item
-                    })
-                }
-            }
+      if (stat.isDirectory()) {
+        imgList.push(...getFileImg(fs.readdirSync(pathItem), pathItem));
+      } else {
+        let isImg = /\.jpg|\.png|\.gif|\.svg/gi.test(item);
+        if (isImg) {
+          imgList.push({
+            path: pathItem,
+            name: item
+          })
         }
-    });
-    return imgList;
+      }
+    }
+  });
+  return imgList;
 };
 
 /**
@@ -72,28 +71,28 @@ const getFileImg = (files, pathDir) => {
  * @returns {*}
  */
 const findNotUseImg = (files, pathDir, imgList) => {
-    files.forEach((item) => {
-        if (!notEachDirectory.includes(item)) {
-            let pathItem = `${pathDir}/${item}`;
-            let stat = fs.statSync(pathItem);
-            if (stat.isDirectory()) {
-                let pathItemFiles = fs.readdirSync(pathItem);
-                let imgs = findNotUseImg(pathItemFiles, pathItem, imgList);
-                imgList.concat(imgs)
-            } else {
-                let isImg = /\.jpg|\.png|\.gif|\.svg/gi.test(item);
-                if(!isImg){
-                    let fileContext = fs.readFileSync(pathItem, 'utf-8');
-                    imgList.forEach((list) => {
-                        let isFindUse = fileContext.indexOf(list.name) === -1 ? false : true;
-                        isFindUse && (list.isUse = true);
-                    });
-                }
-
-            }
+  files.forEach((item) => {
+    if (!notEachDirectory.includes(item)) {
+      let pathItem = `${pathDir}/${item}`;
+      let stat = fs.statSync(pathItem);
+      if (stat.isDirectory()) {
+        let pathItemFiles = fs.readdirSync(pathItem);
+        let imgs = findNotUseImg(pathItemFiles, pathItem, imgList);
+        imgList.concat(imgs)
+      } else {
+        let isImg = /\.jpg|\.png|\.gif|\.svg/gi.test(item);
+        if (!isImg) {
+          let fileContext = fs.readFileSync(pathItem, 'utf-8');
+          imgList.forEach((list) => {
+            let isFindUse = fileContext.indexOf(list.name) === -1 ? false : true;
+            isFindUse && (list.isUse = true);
+          });
         }
-    });
-    return imgList;
+
+      }
+    }
+  });
+  return imgList;
 };
 
 /**
@@ -102,16 +101,16 @@ const findNotUseImg = (files, pathDir, imgList) => {
  * @returns {*}
  */
 const uniq = (imgList) => {
-    let resultArr = [];
-    imgList.forEach((item) => {
-        let findItem = resultArr.find(d => {
-            return d.path === item.path && d.name === item.name
-        });
-        if (!findItem) {
-            resultArr.push(item)
-        }
+  let resultArr = [];
+  imgList.forEach((item) => {
+    let findItem = resultArr.find(d => {
+      return d.path === item.path && d.name === item.name
     });
-    return resultArr
+    if (!findItem) {
+      resultArr.push(item)
+    }
+  });
+  return resultArr
 };
 
 /**
@@ -119,14 +118,16 @@ const uniq = (imgList) => {
  * @param imgList
  */
 const consoleNotUseImg = (imgList) => {
-    let findNotUseImg = imgList.filter((item) => { return !item.isUse});
-    if(findNotUseImg && findNotUseImg.length > 0) {
-        findNotUseImg.forEach((item) => {
-            console.log("未被使用 =>" +chalk.red.underline(`${item.path}`))
+  let findNotUseImg = imgList.filter((item) => {
+    return !item.isUse
+  });
+  if (findNotUseImg && findNotUseImg.length > 0) {
+    findNotUseImg.forEach((item) => {
+      console.log("未被使用 =>" + chalk.red.underline(`${item.path}`))
 
-        })
-    }
-    return findNotUseImg
+    })
+  }
+  return findNotUseImg
 };
 
 showNotUseImgLog();
