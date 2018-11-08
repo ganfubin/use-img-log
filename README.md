@@ -6,7 +6,7 @@
 
 Using npm:
 ```
-  npm install use-img-log
+  npm install use-img-log --save -d
 
   "scripts": {
     "clean": "use-img-log"
