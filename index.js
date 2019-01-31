@@ -11,6 +11,8 @@ let notEachDirectory = ['package.json', 'package-lock.json', 'node_modules', '.i
 
 const showNotUseImgLog = () => {
 
+  console.time('遍历时间');
+
   let root = process.cwd();
 
   //获取项目全部文件
@@ -27,6 +29,8 @@ const showNotUseImgLog = () => {
 
   //打印出没有使用过图片的日志路径
   let notUseImg = consoleNotUseImg(imgList);
+
+  console.timeEnd('遍历时间');
 
   //退出进程
   process.exit((notUseImg && notUseImg.length > 0) ? 1 : 0);
