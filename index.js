@@ -33,7 +33,7 @@ const showNotUseImgLog = () => {
   console.timeEnd('遍历时间');
 
   //退出进程
-  process.exit((notUseImg && notUseImg.length > 0) ? 1 : 0);
+  process.exit(0);
 
 };
 
